@@ -2,6 +2,7 @@ import { Controller, Inject, Get, HttpStatus, Param, HttpCode, Post, Body } from
 import { IProductService } from '../services/product.interface';
 import { ProductPayload } from '../interfaces/product-payload';
 import { DateRangeDto } from '../dtos/date-range.dto';
+import { ProductLinkDto } from '../dtos/product-link.dto';
 
 @Controller('products')
 export class ProductController {
@@ -17,6 +18,12 @@ export class ProductController {
     @HttpCode(HttpStatus.CREATED)
     async upsert(@Body() dateRangeDto: DateRangeDto): Promise<any> {
         return await this.productService.upsert(dateRangeDto);
+    }
+
+    @Post('crawl-create')
+    @HttpCode(HttpStatus.CREATED)
+    async crawlCreate(@Body() productLinkDto: ProductLinkDto): Promise<any> {
+        return await this.productService.crawlCreate(productLinkDto);
     }
 
     @Get()

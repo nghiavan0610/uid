@@ -4,6 +4,7 @@ import { IProductService } from './product.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ProductPayload } from '../interfaces/product-payload';
 import { IShopifyService } from 'src/shopify/services/shopify.interface';
+import { ProductLinkDto } from '../dtos/product-link.dto';
 
 @Injectable()
 export class ProductService implements IProductService {
@@ -30,4 +31,6 @@ export class ProductService implements IProductService {
 
         return products;
     }
+
+    async crawlCreate(productLink: ProductLinkDto): Promise<any> {}
 }
