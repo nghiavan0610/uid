@@ -1,0 +1,85 @@
+[
+    {
+        "id": 7570143576305,
+        "title": "01-01 - interestpod.com - Faith Over Fear Lion And God All Over Print Shirts",
+        "body_html": "<a href=\"https://www.interestpod.com/products/faith-over-fear-lion-and-god-all-over-print-shirts\" target=\"_blank\">Origin link</a>",
+        "vendor": "devsimpleactio",
+        "product_type": "",
+        "created_at": "2022-02-10T20:13:13+07:00",
+        "handle": "01-01-interestpod-com-faith-over-fear-lion-and-god-all-over-print-shirts-1",
+        "updated_at": "2023-04-05T16:55:07+07:00",
+        "published_at": "2022-02-10T20:13:12+07:00",
+        "template_suffix": null,
+        "status": "active",
+        "published_scope": "web",
+        "tags": "Jan-22",
+        "admin_graphql_api_id": "gid://shopify/Product/7570143576305",
+        "variants": [
+            {
+                "id": 42451910263025,
+                "product_id": 7570143576305,
+                "title": "Default Title",
+                "price": "0",
+                "sku": null,
+                "position": 1,
+                "inventory_policy": "deny",
+                "compare_at_price": null,
+                "fulfillment_service": "manual",
+                "inventory_management": null,
+                "option1": "Default Title",
+                "option2": null,
+                "option3": null,
+                "created_at": "2022-02-10T20:13:13+07:00",
+                "updated_at": "2023-04-06T12:13:10+07:00",
+                "taxable": true,
+                "barcode": null,
+                "grams": 0,
+                "image_id": null,
+                "weight": 0.0,
+                "weight_unit": "kg",
+                "inventory_item_id": 44547123839217,
+                "inventory_quantity": -8,
+                "old_inventory_quantity": -8,
+                "requires_shipping": true,
+                "admin_graphql_api_id": "gid://shopify/ProductVariant/42451910263025"
+            }
+        ],
+        "options": [
+            {
+                "id": 9619971735793,
+                "product_id": 7570143576305,
+                "name": "Title",
+                "position": 1,
+                "values": ["Default Title"]
+            }
+        ],
+        "images": [
+            {
+                "id": 36729081200881,
+                "product_id": 7570143576305,
+                "position": 1,
+                "created_at": "2022-02-10T20:13:13+07:00",
+                "updated_at": "2022-02-10T20:13:13+07:00",
+                "alt": null,
+                "width": 800,
+                "height": 800,
+                "src": "https://cdn.shopify.com/s/files/1/0627/7090/5329/products/17585a34-6b0b-11ec-b303-f23c92e70296__Faith_Over_Fear_Lion_And_God_All_Over_Print_Shirts_c342f144-135b-461c-a182-0dc3013f492f.jpg?v=1644498793",
+                "variant_ids": [],
+                "admin_graphql_api_id": "gid://shopify/ProductImage/36729081200881"
+            }
+        ],
+        "image": {
+            "id": 36729081200881,
+            "product_id": 7570143576305,
+            "position": 1,
+            "created_at": "2022-02-10T20:13:13+07:00",
+            "updated_at": "2022-02-10T20:13:13+07:00",
+            "alt": null,
+            "width": 800,
+            "height": 800,
+            "src": "https://cdn.shopify.com/s/files/1/0627/7090/5329/products/17585a34-6b0b-11ec-b303-f23c92e70296__Faith_Over_Fear_Lion_And_God_All_Over_Print_Shirts_c342f144-135b-461c-a182-0dc3013f492f.jpg?v=1644498793",
+            "variant_ids": [],
+            "admin_graphql_api_id": "gid://shopify/ProductImage/36729081200881"
+        }
+    }
+]

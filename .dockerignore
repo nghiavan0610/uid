@@ -1,0 +1,64 @@
+# compiled output
+/dist
+/node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+
+# Tests
+/coverage
+/.nyc_output
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+**/.toolstarget
+
+# IDE - VSCode
+**/.vscode
+**/.vs
+
+# database volumes
+**/*.dbmdl
+
+# Java framework metadata files
+**/*.jfm
+
+# Azure DevSpaces
+**/azds.yaml
+
+# Helm chart
+**/charts
+
+# Env
+**/.env
+
+README.md
+
+# Git
+**/.git
+**/.gitignore
+
+# Docker
+**/.dockerignore
+**/docker-compose*
+**/Dockerfile*
+
+
+# Temporary
+.docker
+/request

@@ -1,0 +1,122 @@
+image: docker:24
+
+services:
+    - docker:dind
+
+variables:
+    ELASTIC_PASSWORD: luyende_es
+    KIBANA_PASSWORD: luyende_kibana
+    STACK_VERSION: 8.9.1
+    LICENSE: basic
+    ELASTIC_PORT: 9200
+    KIBANA_PORT: 5601
+    MEM_LIMIT: 1073741824
+    POSTGRES_DB: luyende-db
+    POSTGRES_USER: luyende
+    POSTGRES_PASSWORD: luyende1234
+    POSTGRES_LOCAL_PORT: 5433
+    POSTGRES_DOCKER_PORT: 5432
+    REDIS_LOCAL_PORT: 6381
+    REDIS_DOCKER_PORT: 6379
+    REDIS_PASSWORD: luyende2345
+    NODE_LOCAL_PORT: 6869
+    NODE_DOCKER_PORT: 8888
+    NODE_EXTRA_CA_CERTS: '/usr/share/elasticsearch/config/certs/ca/ca.crt'
+    ACCESS_TOKEN_SECRET: luyende@y4hZ
+    REFRESH_TOKEN_SECRET: luyende@tBiL
+    ACCESS_TOKEN_EXPIRE: 900000
+    REFRESH_TOKEN_EXPIRE: 604800000
+    CHAT_GPT_API: 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
+    CHAT_GPT_URL: https://api.openai.com/v1/engines/davinci/completions
+    FB_CLIENT_ID: 1354644532124212
+    FB_CLIENT_SECRET: 965ff7b06556bed46a4a6ae19ec9640e
+    FB_CALLBACK_URL: http://localhost:8888/v1/auth/facebook/callback
+    GG_CLIENT_ID: 962031284149-i0ivei44psans24g2ifomouiph0jdf91.apps.googleusercontent.com
+    GG_CLIENT_SECRET: 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
+    GG_CALLBACK_URL: http://localhost:8888/v1/auth/google/callback
+    AWS_REGION: ap-southeast-1
+    AWS_ACCESS_KEY_ID: AKIARCV6P7QEWQ4WMA3Y
+    AWS_SECRET_ACCESS_KEY: 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
+    TEST_QUEUE: arn:aws:sqs:ap-southeast-1:074487692297:luyende
+    TEST_QUEUE_URL: https://sqs.ap-southeast-1.amazonaws.com/074487692297/luyende
+    SNS_TOPIC_ARN: arn:aws:sns:ap-southeast-1:074487692297:luyendetest
+    SEND_GRID_KEY: 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
+    SEND_GRID_EMAIL: nghiavan.dev@gmail.com
+
+stages:
+    - test
+    - build
+    - release
+
+.before_script_common:
+    before_script:
+        - docker version
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    after_script:
+        - docker logout $CI_REGISTRY
+
+test:
+    stage: test
+    except:
+        - main
+    before_script:
+        - apk add --no-cache yarn
+    script:
+        - yarn install
+        - yarn lint
+        # - yarn test
+
+build:
+    stage: build
+    extends: .before_script_common
+    script:
+        - docker pull $CI_REGISTRY_IMAGE:latest || true
+        - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -f Dockerfile .
+        - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+
+release-tag:
+    variables:
+        GIT_STRATEGY: none
+    stage: release
+    except:
+        - main
+    extends: .before_script_common
+    script:
+        - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+        - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+        - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+
+release-latest:
+    variables:
+        GIT_STRATEGY: none
+    stage: release
+    only:
+        - main
+    extends: .before_script_common
+    script:
+        - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+        - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:latest
+        - docker push $CI_REGISTRY_IMAGE:latest
+# deploy:
+#     stage: deploy
+#     variables:
+#         GIT_STRATEGY: none
+#     only:
+#         - main
+#     before_script:
+#         - apk update && apk add openssh-client bash
+#     script:
+#         - eval $(ssh-agent -s)
+#         - bash -c 'ssh-add <(echo "$SSH_PRIVATE_KEY")'
+#         - mkdir -p ~/.ssh
+#         - ssh-keyscan -H $SSH_SERVER_IP >> ~/.ssh/known_hosts
+#         - chmod 644 ~/.ssh/known_hosts
+#         - >
+#             ssh $SSH_USER@$SSH_SERVER_IP
+#             "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY};
+#             cd ${PATH_TO_PROJECT};
+#             docker-compose down;
+#             docker pull ${CI_REGISTRY_IMAGE}:latest;
+#             docker-compose up -d;
+#             docker image prune -f;"
+
