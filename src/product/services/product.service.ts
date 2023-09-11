@@ -15,11 +15,6 @@ export class ProductService implements IProductService {
 
     async findAll(): Promise<any> {
         return await this.prisma.product.findMany();
-        // const beginDate = '2023-08-01';
-        // const endDate = '2023-08-07';
-        // const products = await this.shopifyService.findAll(beginDate, endDate);
-        // console.log(products.length);
-        // return products;
     }
 
     async findById(id: string): Promise<ProductPayload> {
