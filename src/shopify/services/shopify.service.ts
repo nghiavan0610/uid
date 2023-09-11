@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { IShopifyService } from './shopify.interface';
 import Shopify from 'shopify-api-node';
 import { ConfigService } from '@nestjs/config';
-import qs from 'qs';
+import { ShopifyProductPayload } from '../interfaces/shopify-product.interface';
 
 @Injectable()
 export class ShopifyService implements IShopifyService {
@@ -16,42 +16,41 @@ export class ShopifyService implements IShopifyService {
         });
     }
 
-    async findAll(begin: Date, end: Date): Promise<any> {
+    async getProductsByDateRange(begin: Date, end: Date): Promise<ShopifyProductPayload[]> {
         let products = [];
         let sinceId = null;
 
         while (true) {
-            const sinceIdMaybe = sinceId ? { since_id: sinceId } : {};
+            const sinceIdMaybe = sinceId ? { since_id: sinceId } : { since_id: '0' };
             const response = await this.shopifyClient.product.list({
+                ...sinceIdMaybe,
                 created_at_min: `${begin}T00:00:00-07:00`,
                 created_at_max: `${end}T23:59:59-07:00`,
-                order: 'created_at asc',
                 limit: 250,
-                // since_id: sinceId,
-                ...sinceIdMaybe,
+                fields: 'id, title, product_type, created_at, image',
             });
 
             products = products.concat(response);
 
-            console.log(response.length, response?.slice(-1)[0]?.id);
-
             if (!response.length) break;
 
             sinceId = response.slice(-1)[0].id;
-
-            console.log(sinceId);
         }
 
-        const dates = {};
+        return products;
+    }
 
-        products.forEach((product) => {
-            const date = product.created_at.split('T')[0];
+    async createProduct(product: ShopifyProductPayload): Promise<void> {
+        const data = {
+            id: product.id,
+            title: product.title,
+            product_type: product.product_type,
+            created_at: product.created_at,
+            image: {
+                src: product.image.src,
+            },
+        };
 
-            dates[date] = dates[date] ? dates[date] + 1 : 1;
-        });
-
-        return Object.entries(dates).map(([date, count]) => ({
-            [date]: count,
-        }));
+        await this.shopifyClient.product.create(data);
     }
 }

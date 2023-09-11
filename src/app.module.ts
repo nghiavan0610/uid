@@ -5,9 +5,10 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProductModule } from './product/product.module';
 import { ShopifyModule } from './shopify/shopify.module';
+import { UtilModule } from './util/util.module';
 
 @Module({
-    imports: [ConfigModule.forRoot({ isGlobal: true }), PrismaModule, ProductModule, ShopifyModule],
+    imports: [ConfigModule.forRoot({ isGlobal: true }), PrismaModule, ProductModule, ShopifyModule, UtilModule],
     controllers: [AppController],
     providers: [AppService],
 })

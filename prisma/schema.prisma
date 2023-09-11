@@ -11,9 +11,9 @@ datasource db {
 }
 
 model Product {
-  id          String   @id @default(uuid())
+  id          BigInt  @id
   title       String
   productType String
-  createdDate DateTime @default(now())
-  imageUrl    String
+  createdDate String
+  imageUrl    String?
 }

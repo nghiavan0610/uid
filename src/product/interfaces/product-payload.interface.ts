@@ -1,7 +1,7 @@
 export interface ProductPayload {
-    id: string;
+    id: bigint;
     title: string;
     productType: string;
-    createdDate: Date;
-    imageUrl: string;
+    createdDate: string;
+    imageUrl?: string;
 }

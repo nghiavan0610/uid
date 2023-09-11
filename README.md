@@ -26,13 +26,38 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Run Local with Docker Compose
+
+```bash
+
+.env
+DATABASE_URL="postgresql://ben:ben1234@localhost:5433/uid-db-dev?schema=public"
+NODE_LOCAL_PORT=6869
+NODE_DOCKER_PORT=8888
+POSTGRES...
+SHOPIFY...
+```
+
+```bash
+$ docker-compose up -d
+```
+
+## Running the app
+
+```bash
+.env
+DATABASE_URL=postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}?schema=${PGDATABASE}&sslmode=prefer
+NODE_LOCAL_PORT=6869
+NODE_DOCKER_PORT=8888
+POSTGRES...
+SHOPIFY...
+
+Replace POSTGRES variables in DATABASE_URL
+```
 
 ```bash
 $ yarn install
 ```
-
-## Running the app
 
 ```bash
 # development
@@ -64,9 +89,9 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+-   Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+-   Website - [https://nestjs.com](https://nestjs.com/)
+-   Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 
