@@ -8,7 +8,7 @@ services:
             - ./.env
         environment:
             NODE_ENV: 'production'
-            DATABASE_URL: postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}?schema=${PGDATABASE}&sslmode=prefer
+            DATABASE_URL: postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}?schema=uid&sslmode=prefer
         ports:
             - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
         networks:

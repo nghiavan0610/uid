@@ -7,6 +7,7 @@ import { ProductCountByDate } from '../interfaces/product-count-by-date.interfac
 import { IUtilService } from 'src/util/services/util.interface';
 import { ProductIdPayload } from '../interfaces/product-id-payload.interface';
 import { ProductLinkDto } from '../dtos/product-link.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ProductService implements IProductService {
@@ -21,7 +22,27 @@ export class ProductService implements IProductService {
             const products = await this.shopifyService.getProductsByDateRange(begin, end);
 
             const data = products.map((product) => this.utilService.mapProductData(product));
-            await this.prisma.product.createMany({ data });
+
+            await this.prisma.$executeRaw`
+                INSERT INTO "uid"."Product" (id, title, "productType", "createdDate", "imageUrl")
+                VALUES ${Prisma.join(
+                    data.map(
+                        (field: any) =>
+                            Prisma.sql`(${Prisma.join([
+                                field.id,
+                                field.title,
+                                field.productType,
+                                field.createdDate,
+                                field.imageUrl,
+                            ])})`,
+                    ),
+                )}
+                ON CONFLICT (id) DO UPDATE SET
+                    title = EXCLUDED.title,
+                    "productType" = EXCLUDED."productType",
+                    "createdDate" = EXCLUDED."createdDate",
+                    "imageUrl" = EXCLUDED."imageUrl"
+            ;`;
 
             return this.utilService.countProductsByDate(products);
         } catch (error) {
@@ -35,9 +56,12 @@ export class ProductService implements IProductService {
         const { product } = await response.json();
 
         await this.prisma.$transaction(async (tx) => {
-            const data = this.utilService.mapProductData(product);
+            const { id, ...data } = this.utilService.mapProductData(product);
 
-            await Promise.all([this.shopifyService.createProduct(product), tx.product.create({ data })]);
+            await Promise.all([
+                this.shopifyService.createProduct(product),
+                tx.product.upsert({ where: { id }, create: { id, ...data }, update: { ...data } }),
+            ]);
         });
 
         return { productId: product.id };
