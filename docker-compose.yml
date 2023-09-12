@@ -1,19 +1,19 @@
 version: '3.8'
 services:
-    postgres:
-        image: postgres:15
-        container_name: postgres
+    api:
+        container_name: api
+        image: benacio/uid-api:latest
         restart: unless-stopped
-        ports:
-            - '5433:5432'
+        env_file:
+            - ./.env
         environment:
-            POSTGRES_DB: uid-db-dev
-            POSTGRES_USER: ben
-            POSTGRES_PASSWORD: ben1234
-        volumes:
-            - .docker/data/postgres:/var/lib/postgresql/data
+            NODE_ENV: 'production'
+            DATABASE_URL: postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}?schema=${PGDATABASE}&sslmode=prefer
+        ports:
+            - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
         networks:
             - uid-networks
+        command: sh -c 'yarn prisma migrate dev && yarn start:prod'
 
 networks:
     uid-networks:

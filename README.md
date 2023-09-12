@@ -26,7 +26,22 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Run Local with Docker Compose
+## Running Docker Image with Docker Compose
+
+```bash
+
+.env
+NODE_LOCAL_PORT=6869
+NODE_DOCKER_PORT=8888
+POSTGRES...
+SHOPIFY...
+```
+
+```bash
+$ docker-compose -f docker-compose.yml up -d
+```
+
+## Running with Docker Compose Dev
 
 ```bash
 
@@ -39,7 +54,7 @@ SHOPIFY...
 ```
 
 ```bash
-$ docker-compose up -d
+$ docker-compose -f docker-compose.dev.yml up -d
 ```
 
 ## Running the app
